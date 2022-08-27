@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='index.css')}}">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <div id="title">
+            <h1>코로나 국내 현황 한눈에 보기</h1>
+            <h3 id="current_date"></h3>
+        </div>
+    </section>
+
+    <section>
+        {% for k,v in corona_data.items() %}
+            [{{k}}] : {{v}} 명<div class="bar bar{{loop.index}}" value="{{v}}"> </div>
+        {% endfor %}
+    </section>
+
+    <!-- 시도별 현황 표 -->
+    {% for item in corona_city %}
+        지역 : {{item.gubun}} <br>
+        영문 : {{item.gubunEn}} <br>
+        기준일시 : {{item.stdDay}} <br>
+        사망자 수(누적) : {{item.deathCnt}} <br>
+        신규확진자 수 : {{item.incDec}} <br>
+        격리 해제 수 : {{item.isolClearCnt}} <br>
+        10만명당 발생률 : {{item.qurRate}} <br>
+        <hr>
+    {% endfor %}
+
+    <section class="container">
+        <h2>테이블</h2>
+        <table role="table" class="table">
+          <thead role="rowgroup">
+            <tr role="row">
+                <th role="columnheader">지역</th>
+                <th role="columnheader">영문</th>
+                <th role="columnheader">기준일시</th>
+                <th role="columnheader">사망자 수(누적)</th>
+                <th role="columnheader">신규확진자 수</th>
+                <th role="columnheader">격리 해제 수</th>
+                <th role="columnheader">10만명당 발생률</th>
+                </tr>
+            <tbody role="rowgroup">
+                <!-- 지역마다 반복문 -->
+                {% for item in corona_city %}
+                <tr role="row">
+                <td role="cell" data-title="gubun">{{item.gubun}}</td>
+                <td role="cell" data-title="gubunEn">{{item.gubunEn}}</td>
+                <td role="cell" data-title="stdDay">{{item.stdDay}}</td>
+                <td role="cell" data-title="deathCnt">{{item.deathCnt}}</td>
+                <td role="cell" data-title="incDec">{{item.incDec}}</td>
+                <td role="cell" data-title="isolClearCnt">{{item.isolClearCnt}}</td>
+                <td role="cell" data-title="qurRate">{{item.qurRate}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </section>
+      
+
+    <script src="{{url_for('static',filename='index.js')}}"></script>
+</body>
+</html>
